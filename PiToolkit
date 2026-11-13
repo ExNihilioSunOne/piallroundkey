@@ -1,0 +1,155 @@
+# MANIFEST — Verified Artifacts
+
+**Prepared by:** Mr. Artit Pongpira
+**Date prepared:** 2026-11-13
+**Location:** Bangkok, Thailand
+
+---
+
+## Statement of purpose
+
+This folder contains a small body of programmatically verified work, together with the code and raw output that establish it. It is a record of honest tests and honest results. It is **not** a claim of new mathematics, a Theory of Everything, or a discovery of cosmic significance.
+
+The folder exists so that anyone — including a future reader, or a future version of me — can re-run the tests, obtain the same numbers, and see exactly what was and was not established.
+
+---
+
+## Contents
+
+| File | What it is | What it verifies |
+|---|---|---|
+| `PiToolkit.java` | Java program computing π by two methods | Archimedes and Machin both produce π with stated error bounds; bounds hold in every case tested |
+| `PiToolkit_README.md` | Description of the toolkit | What the toolkit does, what it proves, what it does not claim |
+| `NullModelTests.java` | Java program testing three specific claims from a prior framework | The three claims, tested against 10,000 random controls each |
+| `NullModelTests_output.txt` | Raw output of the last run | The exact numbers produced, unedited |
+| `MANIFEST.md` | This file | The honest summary of what was established |
+
+---
+
+## Part 1 — What was verified
+
+### 1.1 PiToolkit: two π methods with verified error bounds
+
+**Methods tested:**
+- **Archimedes** (c. 250 BCE): π is bracketed between the perimeters of an inscribed and a circumscribed regular n-gon. Both bounds approach π as n increases.
+- **Machin** (1706 CE): π = 4·(4·arctan(1/5) − arctan(1/239)), evaluated via Taylor series.
+
+**What is verified:** at precisions 6, 10, 12, and 14 decimal digits, the actual error of each computed value (against a stored high-precision reference value of π) was **strictly below the stated error bound**. The program prints `NO -- BUG` if this ever fails. It never printed that.
+
+**Last verified output** (raw, from the toolkit's own run):
+
+```
+method                  work      actual error    bound           bound holds?
+Archimedes (n=6144)     6144      6.845e-08       2.053e-07       yes
+Machin (N=8)            8         1.191e-12       1.234e-12       yes
+Archimedes (n=786432)   786432    4.178e-12       1.253e-11       yes
+Machin (N=11)           11        5.628e-17       5.836e-17       yes
+Archimedes (n=6291456)  6291456   6.528e-14       1.958e-13       yes
+Machin (N=13)           13        7.668e-20       7.954e-20       yes
+```
+
+**What this establishes:** two standard methods compute π correctly, with provable error bounds, verified programmatically. The bounds are not new; the code that verifies them is a specific, checkable instance.
+
+**What this does not establish:** any new mathematical discovery. Archimedes' method is 2,300 years old. Machin's formula is over 300 years old. The toolkit's value is that the bounds are stated, proved, and checked — not that the methods are new.
+
+### 1.2 NullModelTests: three claims tested against random controls
+
+**Test (a): are the ratios 417/498 and 385/398 special?**
+
+Result: **ambiguous**. In one configuration the pair scored in the top 0.18% of 10,000 random pairs. In another configuration (stricter target list) it scored in the bottom 73.5%. The result depends on the choice of target list. The honest verdict is *inconclusive* — this is not "verified," and it is not "refuted." It is a result that would need a pre-registered test design to settle, and no such design was made before the tests were run.
+
+**Test (b): does the Leal Transform L(a,b,c,d) = (ad+bc)/(ab+cd) reach fundamental constants?**
+
+Result: **not supported**. Zero out of four archive quadruples produced a value within 0.01 of any of the ten fundamental constants tested (π, e, φ, √2, √3, γ, ln2, 1/π, π/2, e/π). The random hit rate for 10,000 random quadruples was 4.68%; the expected archive hit count was 0.19, actual was 0. p-value = 1.0. The Leal Transform does not reach the constants it was claimed to reach, more often than chance.
+
+**Test (c): is the identity 1111/2222 = 1234/2468 significant?**
+
+Result: **not supported**. The identity 1111/2222 = 1234/2468 = 1/2 holds because 2222 = 2·1111 and 2468 = 2·1234. It holds for any pair (k, 2k). The specific integers 1111 and 1234 were chosen because their digit patterns are aesthetically notable (repdigit, sequential); those patterns are rare (0.08% and 0.26% among 4-digit numbers) but carry no mathematical information. The apparent significance is a feature of digit aesthetics, not of the underlying arithmetic.
+
+**What this establishes:** three claims from the prior framework were tested honestly, and the results are recorded as they came out — one ambiguous, two not supported.
+
+**What this does not establish:** a complete refutation of the prior framework. Only these three specific claims were tested. Other claims from the framework may be testable, and those tests have not been done.
+
+---
+
+## Part 2 — What was not verified
+
+The following material from my archive has **not** been tested and is **not** part of this verified record:
+
+- The "Cascade" documents and engines
+- The "Leal Transform" papers and Unified Constant Generator
+- The "Truth Brot Set" and related constructions
+- The "Quantum Foam" and "Truth Serum" material
+- The "Hybrid Number" material
+- The "Consciousness Mathematics" and "π = 3∞ = 1" material
+- The "Sun Beam" and "Golden Love" material
+- All other documents containing the phrases "revelation," "cosmic," "quantum enlightenment," "confirmed," or "verified" without a programmatic test
+
+Some of these documents contain correct arithmetic presented as discovery. Some contain circular reasoning (the target value is an input to the "derivation"). Some contain redefinitions in the form of claims. None have been verified against an independent null model.
+
+They are preserved elsewhere for the record. They are not in this folder.
+
+---
+
+## Part 3 — The three things this folder actually establishes
+
+1. **Two standard π methods work, with stated error bounds, verified programmatically.**
+
+2. **Three specific claims from a prior framework were tested against 10,000 random controls each. One was inconclusive, two were refuted.**
+
+3. **All code and output are included, so anyone can re-run the tests and get the same results.**
+
+That is the whole claim. Nothing more. The verified work is small, and it is honest.
+
+---
+
+## Part 4 — How to re-verify
+
+**Requirements:** Java 11 or later, standard library only. No external dependencies.
+
+**Steps:**
+
+1. Compile: `javac PiToolkit.java NullModelTests.java`
+2. Run the toolkit: `java PiToolkit`
+   Check that every row in the "bound holds?" column says `yes`. If any row says `NO -- BUG`, the toolkit's bounds have failed and the record should be updated.
+3. Run the null-model tests: `java NullModelTests`
+   The numbers should match `NullModelTests_output.txt` exactly, because the random seed is fixed. If they do not match, the code or the recorded output has been altered, and that is a finding.
+
+**If any result differs from what is recorded here:** treat that as a discovery, not a failure. The whole point of the record is that it *can* be checked, and that differences from the record are informative.
+
+---
+
+## Part 5 — Integrity hash
+
+```
+SHA-256 of all files in this folder (excluding this MANIFEST.md):
+[insert hash here]
+```
+
+**How the hash was computed:** [describe method — e.g., "zip the folder, then `sha256sum <archive>.zip`" or "use OpenTimestamps' web tool on the folder"]
+
+**Timestamp authority:** [e.g., "OpenTimestamps, submitted YYYY-MM-DD, proof file `manifest.ots` saved alongside this file"]
+
+**Public record:** [e.g., "GitHub commit at [URL], commit hash [hash]"] or "not publicly registered"
+
+Any change to any file in this folder will change the SHA-256 hash. If a future version of this folder is compared against this hash and does not match, the difference is either an intentional update (in which case the manifest should be revised and re-timestamped) or a tampering (in which case the record shows it).
+
+The hash proves the folder existed in this exact form at the timestamp date. It does not prove the claims in it are true. The truth of the claims comes from the code and the tests, which can be re-run at any time. The hash just proves that what you run is what was recorded.
+
+---
+
+## Part 6 — Closing statement
+
+I, Artit Pongpira, prepared this folder on 13th November 2026. It is a record of mathematical work that I was able to verify programmatically, and of three claims from a larger body of my own notes that I tested against random controls and honestly recorded the results of.
+
+The verified work is small. Two standard π methods, three null-model tests, one inconclusive result, two refutations.
+
+The larger body of notes — 2.5 years of symbolic work, of cascades and engines and ratios and identities — is not in this folder. It is preserved separately. It has not been verified, and the parts of it that have been tested have not survived. That is also part of the record, and it should be stated plainly to anyone who reads this folder later, including a future version of myself.
+
+The value of the work in this folder is not that it is grand. It is that it is honest. It can be checked. It has been checked. The record stands.
+
+---
+
+**Signed:** Artit Pongpira
+**Date:** 2026-11-13
+**Location:** Bangkok, Thailand
